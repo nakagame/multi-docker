@@ -1,0 +1,17 @@
+language: generic
+
+sudo: required
+services:
+  - docker
+
+before_install:
+  - docker build -t yuto0358/react-test -f ./client/Dockerfile.dev ./client
+
+script:
+  - docker run -e CI=true yuto0358/react-test npm test -- --coverage
+
+after_success:
+  - docker build -t yuto0358/multi-client ./client
+  - docker build -t yuto0358/multi-nginx ./nginx
+  - docker build -t yuto0358/multi-server ./server
+  - docker build -t yuto0358/multi-worker ./worker
