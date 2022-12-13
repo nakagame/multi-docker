@@ -5,13 +5,20 @@ services:
   - docker
 
 before_install:
-  - docker build -t yuto0358/react-test -f ./client/Dockerfile.dev ./client
+  - docker build -t yuto358/react-test -f ./client/Dockerfile.dev ./client
 
 script:
-  - docker run -e CI=true yuto0358/react-test npm test -- --coverage
+  - docker run -e CI=true yuto358/react-test npm test -- --coverage
 
 after_success:
-  - docker build -t yuto0358/multi-client ./client
-  - docker build -t yuto0358/multi-nginx ./nginx
-  - docker build -t yuto0358/multi-server ./server
-  - docker build -t yuto0358/multi-worker ./worker
+  - docker build -t yuto358/multi-client ./client
+  - docker build -t yuto358/multi-nginx ./nginx
+  - docker build -t yuto358/multi-server ./server
+  - docker build -t yuto358/multi-worker ./worker
+  # Login to the docker CLI
+  - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_ID" --password-stdin
+  # docker push
+  - docker push yuto358/multi-client
+  - docker push yuto358/multi-nginx
+  - docker push yuto358/multi-server
+  - docker push yuto358/multi-worker
