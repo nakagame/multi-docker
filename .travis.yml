@@ -22,3 +22,15 @@ after_success:
   - docker push yuto358/multi-nginx
   - docker push yuto358/multi-server
   - docker push yuto358/multi-worker
+
+deploy:
+  provider: elasticbeanstalk
+  region: 'ap-northeast-1'
+  app: 'multi-docker'
+  env: 'Multidocker-env'
+  bucket_name: 'elasticbeanstalk-ap-northeast-1-959346621027'
+  bucket_path: 'docker-multi'
+  on:
+    branch: main
+  access_key_id: $AWS_ACESS_KEY
+  secret_access_key: $AWS_SECRET_KEY
